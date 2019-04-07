@@ -60,7 +60,7 @@ class MyWorker(Worker):
         super().__init__(kwargs)
         self.page = 1
         self.gist_url = "https://api.github.com/gists?page=%s&per_page=100" % self.page
-        self.paste_url = "https://snippets.glot.io/snippets?page=%s" % self.page
+        self.paste_url = "https://snippets.glot.io/snippets?page=%s&per_page=100" % self.page
         self.matched_gist_urls = []
         self.matched_paste_urls = []
 
@@ -102,7 +102,7 @@ class MyWorker(Worker):
                     if match == 1:
                         self.response.data.append({"url": self.matched_gist_urls[-1], "match": matched_regex}.copy())
                         if len(self.response.data) == self.settings.number_of_pates_gists.value:
-                            return self.response, len(self.response.data)
+                            return self.response
 
             for paste in pastes:
                 paste_title = paste["title"]
@@ -119,6 +119,6 @@ class MyWorker(Worker):
                 if match == 1:
                     self.response.data.append({"url": self.matched_paste_urls[-1], "match": matched_regex}.copy())
                     if len(self.response.data) == self.settings.number_of_pates_gists.value:
-                        return self.response,len(self.response.data)
+                        return self.response
 
-        return self.response, len(self.response.data)
+        return self.response
